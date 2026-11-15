@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zerot"
+dynamic = ["version"]
+description = "Detect dangerous Unicode characters in source code (zero-width, bidi/Trojan Source, confusables, fullwidth)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "zerot contributors" }]
+keywords = [
+    "unicode", "security", "trojan-source", "homoglyph", "zero-width",
+    "static-analysis", "supply-chain", "confusable",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Utilities",
+]
+
+[project.urls]
+Homepage = "https://github.com/YikunWei-dev/zerot"
+Repository = "https://github.com/YikunWei-dev/zerot"
+Issues = "https://github.com/YikunWei-dev/zerot/issues"
+Changelog = "https://github.com/YikunWei-dev/zerot/blob/main/CHANGELOG.md"
+
+[project.scripts]
+zerot = "zerot.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["zerot*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "zerot.__version__" }
+
+[tool.setuptools.package-data]
+zerot = ["py.typed"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 100
+exclude = ["tests/samples", ".venv", "build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

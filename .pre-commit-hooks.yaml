@@ -1,0 +1,18 @@
+- id: zerot
+  name: Zerot Unicode scanner
+  description: >
+    Detect dangerous Unicode in changed files — zero-width, bidirectional
+    (Trojan Source), homoglyph/confusable, fullwidth, mixed-script.
+  entry: zerot check --fail-on high
+  language: python
+  additional_dependencies: [zerot]
+  pass_filenames: true
+
+- id: zerot-lite
+  name: Zerot Unicode scanner (lite, no install)
+  description: >
+    Same scanner using the standalone zerot_lite.py. No pip install required —
+    drop zerot_lite.py into your repo and use this hook.
+  entry: python3 zerot_lite.py scan --fail-on high --no-color
+  language: system
+  pass_filenames: true

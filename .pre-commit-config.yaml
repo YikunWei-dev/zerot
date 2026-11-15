@@ -1,0 +1,10 @@
+# This project dogfoods itself: run zerot as a pre-commit hook.
+repos:
+  - repo: local
+    hooks:
+      - id: zerot-lite
+        name: Zerot lite — dangerous Unicode scanner
+        entry: python3 zerot_lite.py check --fail-on high
+        language: system
+        pass_filenames: false
+        files: ''

@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include zerot_lite.py
+recursive-include src/zerot *.py py.typed
+recursive-exclude * __pycache__
+recursive-exclude * *.pyc
+global-exclude *.pyc

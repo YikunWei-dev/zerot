@@ -1,0 +1,48 @@
+name: Zerot Unicode scanner
+description: >
+  Scan source code for dangerous Unicode characters — zero-width, bidirectional
+  (Trojan Source), homoglyph/confusable, fullwidth, mixed-script — and upload
+  results as SARIF to GitHub code scanning.
+author: zerot contributors
+branding:
+  icon: alert-triangle
+  color: red
+
+inputs:
+  targets:
+    description: Files or directories to scan (space-separated).
+    required: false
+    default: "."
+  format:
+    description: Output format — md, json, text or sarif.
+    required: false
+    default: sarif
+  fail-on:
+    description: Minimum severity that makes the step fail (low/medium/high/critical).
+    required: false
+    default: high
+  upload-sarif:
+    description: Upload SARIF to GitHub code scanning (only when format=sarif).
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+    - name: Install zerot
+      shell: bash
+      # Install from this action's own checkout so the scanner matches the
+      # exact code at the referenced ref (not a possibly-stale PyPI release).
+      run: pip install "${{ github.action_path }}"
+    - name: Scan
+      shell: bash
+      run: zerot scan ${{ inputs.targets }} --format ${{ inputs.format }} -o zerot.sarif --fail-on ${{ inputs.fail-on }}
+      continue-on-error: true
+    - name: Upload SARIF
+      if: ${{ inputs.upload-sarif == 'true' && inputs.format == 'sarif' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: zerot.sarif
